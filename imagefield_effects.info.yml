@@ -1,0 +1,12 @@
+name: Imagefield Effects
+type: module
+description: An implementation of a imagefield with filter effects.
+package: Field types
+# core: 8.x
+dependencies:
+  - image
+
+# Information added by Drupal.org packaging script on 2014-10-22
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'custom'
