@@ -2,11 +2,12 @@
 
 /**
  * @file
- * Contains \Drupal\image_effects\Plugin\ImageToolkit\Operation\gd\Resize.
+ * Contains \Drupal\image_effects\Plugin\ImageToolkit\Operation\gd\Colorize.
  */
 
 namespace Drupal\image_effects\Plugin\ImageToolkit\Operation\gd;
 
+use Drupal\Core\ImageToolkit\GDImageToolkitOperationBase;
 use Drupal\Component\Utility\String;
 
 /**
@@ -20,7 +21,8 @@ use Drupal\Component\Utility\String;
  *   description = @Translation("Apply colorize filter to the image")
  * )
  */
-class Resize extends GDImageToolkitOperationBase {
+
+class Colorize extends GDImageToolkitOperationBase {
 
   /**
    * {@inheritdoc}
