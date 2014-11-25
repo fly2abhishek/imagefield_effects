@@ -25,11 +25,11 @@ class SepiaImageEffect extends ImageEffectBase {
    * {@inheritdoc}
    */
   public function applyEffect(ImageInterface $image) {
-  /*  if (!$image->desaturate()) {
+    if (!$image->desaturate()) {
       $this->logger->error('Image desaturate failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array('%toolkit' => $image->getToolkitId(), '%path' => $image->getSource(), '%mimetype' => $image->getMimeType(), '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()));
       return FALSE;
-    } */
-    if (!$image->apply('desaturate')) {
+    }
+    if (!$image->apply('colorize',array('red' => 100,'blue' => 50, 'green' => 0))) {
       $this->logger->error('Image sepia failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array('%toolkit' => $image->getToolkitId(), '%path' => $image->getSource(), '%mimetype' => $image->getMimeType(), '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()));
       return FALSE;
     }

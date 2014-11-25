@@ -2,12 +2,12 @@
 
 /**
  * @file
- * Contains \Drupal\image_effects\Plugin\ImageToolkit\Operation\gd\Colorize.
+ * Contains \Drupal\imagefield_effects\Plugin\ImageToolkit\Operation\gd\Colorize.
  */
 
-namespace Drupal\image_effects\Plugin\ImageToolkit\Operation\gd;
+namespace Drupal\imagefield_effects\Plugin\ImageToolkit\Operation\gd;
 
-use Drupal\Core\ImageToolkit\GDImageToolkitOperationBase;
+use Drupal\system\Plugin\ImageToolkit\Operation\gd\GDImageToolkitOperationBase;
 use Drupal\Component\Utility\String;
 
 /**
@@ -21,7 +21,6 @@ use Drupal\Component\Utility\String;
  *   description = @Translation("Apply colorize filter to the image")
  * )
  */
-
 class Colorize extends GDImageToolkitOperationBase {
 
   /**
@@ -51,13 +50,13 @@ class Colorize extends GDImageToolkitOperationBase {
     $arguments['green'] = (int) round($arguments['green']);
 
     // Fail when width or height are 0 or negative.
-    if ($arguments['red'] <= 0 || $arguments['red'] > 255) {
+    if ($arguments['red'] < 0 || $arguments['red'] > 255) {
       throw new \InvalidArgumentException(String::format("Invalid (@value) specified for the image red component", array('@value' => $arguments['red'])));
     }
-    if ($arguments['blue'] <= 0 || $arguments['blue'] > 255) {
+    if ($arguments['blue'] < 0 || $arguments['blue'] > 255) {
       throw new \InvalidArgumentException(String::format("Invalid (@value) specified for the image blue component", array('@value' => $arguments['blue'])));
     }
-    if ($arguments['green'] <= 0 || $arguments['green'] > 255) {
+    if ($arguments['green'] < 0 || $arguments['green'] > 255) {
       throw new \InvalidArgumentException(String::format("Invalid (@value) specified for the image green component", array('@value' => $arguments['green'])));
     }
 
@@ -71,20 +70,16 @@ class Colorize extends GDImageToolkitOperationBase {
     // Create a new resource of the required dimensions, and copy and resize
     // the original resource on it with resampling. Destroy the original
     // resource upon success.
-    $original_resource = $this->getToolkit()->getResource();
-    $data = array(
-      'red' => $arguments['red'],
-      'blue' => $arguments['blue'],
-      'green' => $arguments['green'],
-      'extension' => image_type_to_extension($this->getToolkit()->getType(), FALSE),
-      'transparent_color' => $this->getToolkit()->getTransparentColor()
-    );
-    if ($this->getToolkit()->apply('create_new', $data)) {
-      if (imagefilter($original_resource,IMG_FILTER_COLORIZE,$arguments['red'],$arguments['blue'],$arguments['green'])) {
-        return TRUE;
-      }
+
+    // PHP installations using non-bundled GD do not have imagefilter.
+    if (!function_exists('imagefilter')) {
+      $this->logger->notice("The image '@file' could not be desaturated because the imagefilter() function is not available in this PHP installation.", array('@file' => $this->getToolkit()->getImage()->getSource()));
+      return FALSE;
     }
-    return FALSE;
+
+    return imagefilter($this->getToolkit()->getResource(), IMG_FILTER_COLORIZE,$arguments['red'],$arguments['blue'],$arguments['green']);
+
+
   }
 
 }
