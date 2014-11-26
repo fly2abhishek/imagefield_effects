@@ -4,7 +4,6 @@
  * @file
  * Contains \Drupal\imagefield_effects\Plugin\ImageToolkit\Operation\gd\Colorize.
  */
-
 namespace Drupal\imagefield_effects\Plugin\ImageToolkit\Operation\gd;
 
 use Drupal\system\Plugin\ImageToolkit\Operation\gd\GDImageToolkitOperationBase;
@@ -48,7 +47,6 @@ class Colorize extends GDImageToolkitOperationBase {
     $arguments['red'] = (int) round($arguments['red']);
     $arguments['blue'] = (int) round($arguments['blue']);
     $arguments['green'] = (int) round($arguments['green']);
-
     // Fail when width or height are 0 or negative.
     if ($arguments['red'] < 0 || $arguments['red'] > 255) {
       throw new \InvalidArgumentException(String::format("Invalid (@value) specified for the image red component", array('@value' => $arguments['red'])));
@@ -59,7 +57,6 @@ class Colorize extends GDImageToolkitOperationBase {
     if ($arguments['green'] < 0 || $arguments['green'] > 255) {
       throw new \InvalidArgumentException(String::format("Invalid (@value) specified for the image green component", array('@value' => $arguments['green'])));
     }
-
     return $arguments;
   }
 
@@ -70,15 +67,16 @@ class Colorize extends GDImageToolkitOperationBase {
     // Create a new resource of the required dimensions, and copy and resize
     // the original resource on it with resampling. Destroy the original
     // resource upon success.
-
     // PHP installations using non-bundled GD do not have imagefilter.
     if (!function_exists('imagefilter')) {
-      $this->logger->notice("The image '@file' could not be desaturated because the imagefilter() function is not available in this PHP installation.", array('@file' => $this->getToolkit()->getImage()->getSource()));
+      $this->logger->notice("The image '@file' could not be desaturated because the imagefilter() function is not available in this PHP installation.", array(
+        '@file' => $this->getToolkit()
+            ->getImage()->getSource()
+      ));
       return FALSE;
     }
-
-    return imagefilter($this->getToolkit()->getResource(), IMG_FILTER_COLORIZE,$arguments['red'],$arguments['blue'],$arguments['green']);
-
+    return imagefilter($this->getToolkit()
+      ->getResource(), IMG_FILTER_COLORIZE, $arguments['red'], $arguments['blue'], $arguments['green']);
 
   }
 

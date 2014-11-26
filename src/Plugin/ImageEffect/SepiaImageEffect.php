@@ -3,12 +3,10 @@
  * @file
  * Contains \Drupal\imagefield_effects\Plugin\ImageEffect.
  */
-
 namespace Drupal\imagefield_effects\Plugin\ImageEffect;
 
 use Drupal\Core\Image\ImageInterface;
 use Drupal\image\ImageEffectBase;
-
 
 /**
  * Sepia (grayscale yellow) an image resource.
@@ -26,11 +24,26 @@ class SepiaImageEffect extends ImageEffectBase {
    */
   public function applyEffect(ImageInterface $image) {
     if (!$image->desaturate()) {
-      $this->logger->error('Image desaturate failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array('%toolkit' => $image->getToolkitId(), '%path' => $image->getSource(), '%mimetype' => $image->getMimeType(), '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()));
+      $this->logger->error('Image desaturate failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array(
+        '%toolkit' => $image->getToolkitId(),
+        '%path' => $image->getSource(),
+        '%mimetype' => $image->getMimeType(),
+        '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()
+      ));
       return FALSE;
     }
-    if (!$image->apply('colorize',array('red' => 100,'blue' => 50, 'green' => 0))) {
-      $this->logger->error('Image sepia failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array('%toolkit' => $image->getToolkitId(), '%path' => $image->getSource(), '%mimetype' => $image->getMimeType(), '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()));
+    if (!$image->apply('colorize', array(
+      'red' => 100,
+      'blue' => 50,
+      'green' => 0
+    ))
+    ) {
+      $this->logger->error('Image sepia failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array(
+        '%toolkit' => $image->getToolkitId(),
+        '%path' => $image->getSource(),
+        '%mimetype' => $image->getMimeType(),
+        '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()
+      ));
       return FALSE;
     }
     return TRUE;
