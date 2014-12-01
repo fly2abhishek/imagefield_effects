@@ -9,32 +9,23 @@ use Drupal\Core\Image\ImageInterface;
 use Drupal\image\ImageEffectBase;
 
 /**
- * Sepia (grayscale yellow) an image resource.
+ * Acqua (grayscale yellow) an image resource.
  *
  * @ImageEffect(
- *   id = "image_sepia",
- *   label = @Translation("Sepia"),
- *   description = @Translation("Sepia converts an image to grayscale yellow.")
+ *   id = "image_acqua",
+ *   label = @Translation("Acqua"),
+ *   description = @Translation("Acqua converts an image to grayscale yellow.")
  * )
  */
-class SepiaImageEffect extends ImageEffectBase {
+class AcquaImageEffect extends ImageEffectBase {
 
   /**
    * {@inheritdoc}
    */
   public function applyEffect(ImageInterface $image) {
-    if (!$image->desaturate()) {
-      $this->logger->error('Image desaturate failed using the %toolkit toolkit on %path (%mimetype, %dimensions)', array(
-        '%toolkit' => $image->getToolkitId(),
-        '%path' => $image->getSource(),
-        '%mimetype' => $image->getMimeType(),
-        '%dimensions' => $image->getWidth() . 'x' . $image->getHeight()
-      ));
-      return FALSE;
-    }
     if (!$image->apply('colorize', array(
-      'red' => 100,
-      'blue' => 50,
+      'red' => 50,
+      'blue' => 100,
       'green' => 0
     ))
     ) {
